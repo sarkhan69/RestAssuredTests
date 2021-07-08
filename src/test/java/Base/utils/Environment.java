@@ -11,7 +11,7 @@ public class Environment {
 
     public static String get(String key) {
 
-        File file = new File("src/test/resources/static/routs.properties");
+        File file = new File("src/test/resources/routs/routs.properties");
         try {
             properties.load(new FileReader(file));
         } catch (IOException e) {
