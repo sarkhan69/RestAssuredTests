@@ -1,7 +1,7 @@
 package Base.Steps.ExampleSteps;
 
 import Base.BodyForRequests.BodyForCreateUsers;
-import Base.Steps.CommonSteps;
+import Base.Steps.MainSteps;
 import Base.utils.Environment;
 import io.qameta.allure.Step;
 import io.restassured.builder.RequestSpecBuilder;
@@ -9,7 +9,7 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-public class ExampleSteps extends CommonSteps{
+public class ExampleSteps extends MainSteps {
     protected RequestSpecBuilder exampleSpec() {
         return getCommonRequestSpecBuilder()
                 .setBasePath(Environment.get("base.path"));

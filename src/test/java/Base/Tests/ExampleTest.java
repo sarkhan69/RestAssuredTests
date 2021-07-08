@@ -12,14 +12,14 @@ public class ExampleTest extends ExampleSteps implements ObjectGeneratorFromMode
     @Test
     public void getUsers(){
         getUsersList();
-        responseShouldBeSuccess();
+        responseChekSuccess();
     }
 
     @DisplayName("Проверяем модель по конкретному юзеру(4)")
     @Test
     public void getUser(){
         getSingleUser(4);
-        responseShouldBeSuccess();
+        responseChekSuccess();
         jsonSchemaValidation("schema/userSchema.json");
     }
 
@@ -34,7 +34,7 @@ public class ExampleTest extends ExampleSteps implements ObjectGeneratorFromMode
     @Test
     public void createUser(){
         createUser(generateModel());
-        responseShouldBeSuccess201();
+        responseCheckSuccess201();
         jsonSchemaValidation("schema/createUsersSchema.json");
     }
 }

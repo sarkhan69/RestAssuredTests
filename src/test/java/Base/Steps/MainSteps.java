@@ -5,59 +5,50 @@ import com.google.common.base.Preconditions;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
-public class CommonSteps {
+public class MainSteps {
 
-    private static boolean isRequestLoggingEnabled;
+    private static boolean LoginON;
 
-    static { isRequestLoggingEnabled = Boolean.parseBoolean(Environment.get("settings.request.logging.enabled"));
+    static { LoginON = Boolean.parseBoolean(Environment.get("settings.request.logging.enabled"));
     }
 
-    private Response lastResponse;
+    private Response actualResponse;
 
     protected ValidatableResponse then() {
         return lastResponse().then();
     }
 
     protected Response lastResponse() {
-        Preconditions.checkNotNull(lastResponse, "Response should be created");
-        return lastResponse;
+        Preconditions.checkNotNull(actualResponse, "Response should be created");
+        return actualResponse;
     }
 
     @Step
-    public void responseShouldBeSuccess() {
+    public void responseChekSuccess() {
         then().assertThat().statusCode(200);
     }
 
     @Step
-    public void responseShouldBeSuccess201() {
+    public void responseCheckSuccess201() {
         then().assertThat().statusCode(201);
     }
 
     @Step
-    public void responseShouldBeBadRequest() { then().assertThat().statusCode(400);}
+    public void responseChekBadRequest() { then().assertThat().statusCode(400);}
 
     @Step
-    public void responseShouldBeUnauthorized() {
-        then().assertThat().statusCode(401);
-    }
-
-    @Step
-    public void responseShouldBeForbidden() {
-        then().assertThat().statusCode(403);
-    }
-
-    @Step
-    public void responseShouldBeNotFound() {
+    public void responseCheckNotFound() {
         then().assertThat().statusCode(404);
     }
 
     @Step
-    public void responseShouldBeInternalServerError() {
+    public void responseCheckServerError() {
         then().assertThat().statusCode(500);
     }
 
@@ -65,8 +56,15 @@ public class CommonSteps {
     public void jsonSchemaValidation(String pathToSchema){
         then().assertThat().body(matchesJsonSchemaInClasspath(pathToSchema));}
 
+    @Step
+    public String getValue(String path){
+        JsonPath jsonPath = new JsonPath(actualResponse.asString());
+
+        return jsonPath.get(path) != null? jsonPath.get(path).toString(): "нет поля";
+    }
+
     protected RequestSpecification getRequestSpecWithLogging(RequestSpecBuilder requestSpecBuilder) {
-        return isRequestLoggingEnabled
+        return LoginON
                 ? requestSpecBuilder.addFilter(new AllureRestAssured())
                 .build()
                 .log()
@@ -75,11 +73,11 @@ public class CommonSteps {
     }
 
     protected Response getResponseWithLogging(Response response) {
-        if (isRequestLoggingEnabled) {
+        if (LoginON) {
             response.body().print();
         }
 
-        lastResponse = response;
+        actualResponse = response;
         return response;
     }
 
