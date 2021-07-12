@@ -13,9 +13,9 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 
 public class MainSteps {
 
-    private static boolean LoginON;
+    private static boolean LogON;
 
-    static { LoginON = Boolean.parseBoolean(Environment.get("settings.request.logging.enabled"));
+    static { LogON = Boolean.parseBoolean(Environment.get("settings.request.logging.enabled"));
     }
 
     private Response actualResponse;
@@ -64,7 +64,7 @@ public class MainSteps {
     }
 
     protected RequestSpecification getRequestSpecWithLogging(RequestSpecBuilder requestSpecBuilder) {
-        return LoginON
+        return LogON
                 ? requestSpecBuilder.addFilter(new AllureRestAssured())
                 .build()
                 .log()
@@ -73,7 +73,7 @@ public class MainSteps {
     }
 
     protected Response getResponseWithLogging(Response response) {
-        if (LoginON) {
+        if (LogON) {
             response.body().print();
         }
 
