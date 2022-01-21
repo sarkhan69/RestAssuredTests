@@ -1,9 +1,9 @@
 package Base.Steps;
 
 import Base.utils.Environment;
+import Base.utils.restassured.AllureRestAssured;
 import com.google.common.base.Preconditions;
 import io.qameta.allure.Step;
-import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;

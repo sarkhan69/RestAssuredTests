@@ -1,12 +1,11 @@
 package Base.Tests;
 
 import Base.BodyForRequests.BodyForCreateUsers;
-import Base.BodyForRequests.ObjectGeneratorFromModels;
 import Base.Steps.ExampleSteps.ExampleSteps;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ExampleTest extends ExampleSteps implements ObjectGeneratorFromModels {
+public class ExampleTest extends ExampleSteps {
 
     @DisplayName("Проверяем код 200 на запрос списка юзеров")
     @Test
@@ -23,17 +22,12 @@ public class ExampleTest extends ExampleSteps implements ObjectGeneratorFromMode
         jsonSchemaValidation("schema/userSchema.json");
     }
 
-    @Override
-    public BodyForCreateUsers generateModel() {
-        return new BodyForCreateUsers(
-                "stiven",
-                "capitan_america");
-    }
-
     @DisplayName("Создаем юзера")
     @Test
     public void createUser(){
-        createUser(generateModel());
+        createUser(new BodyForCreateUsers(
+                "stiven",
+                "capitan_america"));
         responseCheckSuccess201();
         jsonSchemaValidation("schema/createUsersSchema.json");
     }
